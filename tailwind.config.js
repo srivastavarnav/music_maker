@@ -38,7 +38,7 @@ module.exports = {
           DEFAULT: '#00F46E',
         },
         blue: {
-          DEFAULT: '#91C1F2',
+          DEFAULT: '#16a8f0',
           telegram: '#0088CC',
         },
         gray: {

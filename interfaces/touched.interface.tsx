@@ -1,2 +1,2 @@
-interface TouchedNotes { [key: string]: [] };
+interface TouchedNotes { [key: string]: string[] };
 export default TouchedNotes;

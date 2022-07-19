@@ -6,17 +6,21 @@ import useInterval from "../hooks/useInterval";
 import MusicGrid from "../containers/MusicGrid";
 import TouchedNotes from "../interfaces/touched.interface";
 import { PolySynth, Player } from "tone";
+import Drums from "../enums/drums.enum";
 
 const Home: NextPage = () => {
   const [currentCol, setCurrentCol] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [touchedNotes, setTouchedNotes] = useState<TouchedNotes>({});
+  const [touchedDrumNotes, setTouchedDrumNotes] = useState<TouchedNotes>({});
   const [instrument, setInstrument] = useState<PolySynth | null>(null);
   const [snare, setSnare] = useState<Player | null>(null);
   const [kick, setKick] = useState<Player | null>(null);
 
   useEffect(() => {
     const polySynth = new PolySynth().toDestination();
+    setKick(new Player("/audio/kick.mp3").toDestination());
+    setSnare(new Player("/audio/snare.mp3").toDestination());
     setInstrument(polySynth);
   }, []);
 
@@ -26,6 +30,17 @@ const Home: NextPage = () => {
       touchedNotes[(currentCol + 1) % 32],
       "16n"
     );
+    if (
+      touchedDrumNotes[(currentCol + 1) % 32]?.includes(Drums.KICK) &&
+      touchedDrumNotes[(currentCol + 1) % 32]?.includes(Drums.SNARE)
+    ) {
+      kick?.start();
+      snare?.start();
+    } else if (touchedDrumNotes[(currentCol + 1) % 32]?.includes(Drums.SNARE)) {
+      snare?.start();
+    } else if (touchedDrumNotes[(currentCol + 1) % 32]?.includes(Drums.KICK)) {
+      kick?.start();
+    }
   };
 
   const play = () => {
@@ -65,6 +80,34 @@ const Home: NextPage = () => {
     }
   };
 
+  const setSelectedDrumNotes = ({
+    note,
+    colId,
+    remove = false,
+  }: {
+    note: string;
+    colId: number;
+    remove?: boolean;
+  }) => {
+    if (remove) {
+      setTouchedDrumNotes((notes) => {
+        return Object.assign({}, notes, {
+          [colId]:
+            notes[colId] === undefined
+              ? []
+              : notes[colId].filter((n) => n != note),
+        });
+      });
+    } else {
+      setTouchedDrumNotes((notes) => {
+        return Object.assign({}, notes, {
+          [colId]:
+            notes[colId] === undefined ? [note] : [...notes[colId], note],
+        });
+      });
+    }
+  };
+
   useInterval(playMusicSheet, isPlaying ? 500 : null);
 
   return (
@@ -77,13 +120,15 @@ const Home: NextPage = () => {
       <div className="absolute w-full h-20 top-0 bg-yellow-100"></div>
       <MusicGrid
         currentCol={currentCol}
-        touchedNotes={touchedNotes}
         setTouchedNotes={setSelectedNotes}
+        setTouchedDrumNotes={setSelectedDrumNotes}
         instrument={instrument}
+        snare={snare}
+        kick={kick}
       />
       <div className="absolute w-full h-[110px] bottom-0 border-t-[1px] border-solid border-t-gray px-6 py-4 flex items-center">
         <div
-          className="cursor-pointer h-20 w-20 rounded-full bg-blue-400 hover:bg-blue-300 flex items-center justify-center"
+          className="cursor-pointer h-20 w-20 rounded-full bg-blue hover:bg-blue-300 flex items-center justify-center"
           onClick={isPlaying ? stop : play}
         >
           {isPlaying ? (
