@@ -32,6 +32,21 @@ const Home: NextPage = () => {
     setCurrentCol(-1);
   };
 
+  const setSelectedNotes = ({
+    note,
+    colId,
+  }: {
+    note: string;
+    colId: number;
+  }) => {
+    setTouchedNotes((notes) => {
+      console.log(notes);
+      return Object.assign({}, notes, {
+        [colId]: notes[colId] === undefined ? [note] : [...notes[colId], note],
+      });
+    });
+  };
+
   useInterval(playMusicSheet, isPlaying ? 500 : null);
 
   return (
@@ -44,7 +59,7 @@ const Home: NextPage = () => {
       <MusicGrid
         currentCol={currentCol}
         touchedNotes={touchedNotes}
-        setTouchedNotes={setTouchedNotes}
+        setTouchedNotes={setSelectedNotes}
         instrument={instrument}
       />
       <div className="absolute w-full h-[110px] bottom-0 border-t-[1px] border-solid border-t-gray px-6 py-4 flex items-center">

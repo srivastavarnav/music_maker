@@ -7,7 +7,7 @@ const notes = ["B", "A", "G", "F", "E", "D", "C"];
 type MusicGridType = {
   currentCol: number;
   touchedNotes: TouchedNotes;
-  setTouchedNotes: (notes: TouchedNotes) => void;
+  setTouchedNotes: ({ note, colId }: { note: string; colId: number }) => void;
   instrument: any;
 };
 
@@ -38,16 +38,8 @@ const MusicGrid = ({
     duration?: string;
     colId: number;
   }) {
-    setTouchedNotes(
-      Object.assign({}, touchedNotes, {
-        [colId]:
-          touchedNotes[colId] === undefined
-            ? [note]
-            : [...touchedNotes[colId], note],
-      })
-    );
+    setTouchedNotes({ note, colId });
     instrument.triggerAttackRelease(note, duration);
-
   }
 
   return musicSheet != null ? ( // Add Suspense
@@ -70,7 +62,9 @@ const MusicGrid = ({
       </div>
     </div>
   ) : (
-    <div className="absolute inset-0 flex justify-center items-center">Loading...</div>
+    <div className="absolute inset-0 flex justify-center items-center">
+      Loading...
+    </div>
   );
 };
 
