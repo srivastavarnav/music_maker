@@ -1,17 +1,27 @@
 import Block from "../components/Block";
-import { PolySynth } from "tone";
 import { useState, useEffect } from "react";
+import TouchedNotes from "../interfaces/touched.interface";
 
 const notes = ["B", "A", "G", "F", "E", "D", "C"];
 
-const MusicGrid = () => {
-  const [musicSheet, setMusicSheet] = useState<[][] | null>(null);
+type MusicGridType = {
+  currentCol: number;
+  touchedNotes: TouchedNotes;
+  setTouchedNotes: (notes: TouchedNotes) => void;
+  instrument: any;
+};
 
-  const polySynth = new PolySynth().toDestination();
+const MusicGrid = ({
+  currentCol,
+  touchedNotes,
+  setTouchedNotes,
+  instrument,
+}: MusicGridType) => {
+  const [musicSheet, setMusicSheet] = useState<[][] | null>(null);
 
   useEffect(() => {
     let musicSheet = new Array(14);
-    const baseScale = 5;
+    const baseScale = 6;
     for (let i = 0; i < musicSheet.length; i++) {
       const startScale = baseScale - Math.floor(i / notes.length);
       musicSheet[i] = new Array(32).fill(notes[i % notes.length] + startScale);
@@ -19,14 +29,25 @@ const MusicGrid = () => {
     setMusicSheet(musicSheet);
   }, []);
 
-  function playSynth({
+  function playAndCaptureNote({
     note,
     duration = "16n",
+    colId,
   }: {
     note: string;
     duration?: string;
+    colId: number;
   }) {
-    polySynth.triggerAttackRelease(note, duration);
+    setTouchedNotes(
+      Object.assign({}, touchedNotes, {
+        [colId]:
+          touchedNotes[colId] === undefined
+            ? [note]
+            : [...touchedNotes[colId], note],
+      })
+    );
+    instrument.triggerAttackRelease(note, duration);
+
   }
 
   return musicSheet != null ? ( // Add Suspense
@@ -40,7 +61,8 @@ const MusicGrid = () => {
                 rowId={rowId}
                 colId={colId}
                 note={note}
-                playNote={playSynth}
+                playNote={playAndCaptureNote}
+                playingCol={currentCol}
               />
             );
           });
@@ -48,7 +70,7 @@ const MusicGrid = () => {
       </div>
     </div>
   ) : (
-    <div>Loading...</div>
+    <div className="absolute inset-0 flex justify-center items-center">Loading...</div>
   );
 };
 
