@@ -23,7 +23,7 @@ module.exports = {
     extend: {
       gridTemplateRows: {
         // Simple 8 row grid
-        '14': 'repeat(14, minmax(0, 1fr))',
+        '16': 'repeat(16, minmax(0, 1fr))',
       },
       gridTemplateColumns: {
         '32': 'repeat(32, minmax(0, 1fr))',

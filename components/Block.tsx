@@ -12,6 +12,7 @@ type BlockType = {
     duration?: string;
     colId: number;
   }) => void;
+  removeNote: ({ note, colId }: { note: string; colId: number }) => void;
   note: string;
   playingCol: number;
 };
@@ -26,7 +27,14 @@ const pink: string = "bg-pink-400";
 
 const colors = [pink, purple, darkGreen, green, yellow, orange, red];
 
-const Block = ({ rowId, colId, playNote, note, playingCol }: BlockType) => {
+const Block = ({
+  rowId,
+  colId,
+  playNote,
+  note,
+  playingCol,
+  removeNote,
+}: BlockType) => {
   const [isSelected, setIsSelected] = useState<boolean>(false);
 
   const selectBlock = (event: React.MouseEvent) => {
@@ -34,7 +42,11 @@ const Block = ({ rowId, colId, playNote, note, playingCol }: BlockType) => {
       setIsSelected(true);
       playNote({ note, colId });
     } else if (event.type === "click") {
-      if (!isSelected) playNote({ note, colId });
+      if (!isSelected) {
+        playNote({ note, colId });
+      } else {
+        removeNote({ note, colId });
+      }
       setIsSelected(!isSelected);
     }
   };
@@ -43,9 +55,10 @@ const Block = ({ rowId, colId, playNote, note, playingCol }: BlockType) => {
     <div
       onMouseEnter={selectBlock}
       onClick={selectBlock}
-      className={`h-[calc(100vw/32*0.85)] border-solid border-[0.5px] border-blue-100 ${
+      className={`h-[calc((100vh-190px)/16)] w- border-solid border-[0.5px] border-blue-100 ${
         (colId + 1) % 2 === 0 ? "border-r-blue-400" : ""
       } ${rowId === 7 ? "border-t-blue-400" : ""}
+      ${rowId === 13 ? "border-b-gray-300 border-b-[2px]" : ""}
       ${isSelected ? colors[rowId % colors.length] : ""}
       ${
         playingCol == colId && !isSelected

@@ -5,13 +5,15 @@ import { FaPlay, FaStop } from "react-icons/fa";
 import useInterval from "../hooks/useInterval";
 import MusicGrid from "../containers/MusicGrid";
 import TouchedNotes from "../interfaces/touched.interface";
-import { PolySynth } from "tone";
+import { PolySynth, Player } from "tone";
 
 const Home: NextPage = () => {
   const [currentCol, setCurrentCol] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [touchedNotes, setTouchedNotes] = useState<TouchedNotes>({});
-  const [instrument, setInstrument] = useState<any>(null);
+  const [instrument, setInstrument] = useState<PolySynth | null>(null);
+  const [snare, setSnare] = useState<Player | null>(null);
+  const [kick, setKick] = useState<Player | null>(null);
 
   useEffect(() => {
     const polySynth = new PolySynth().toDestination();
@@ -20,7 +22,10 @@ const Home: NextPage = () => {
 
   const playMusicSheet = () => {
     setCurrentCol((currentCol + 1) % 32);
-    instrument.triggerAttackRelease(touchedNotes[currentCol + 1], "16n");
+    instrument?.triggerAttackRelease(
+      touchedNotes[(currentCol + 1) % 32],
+      "16n"
+    );
   };
 
   const play = () => {
@@ -35,16 +40,29 @@ const Home: NextPage = () => {
   const setSelectedNotes = ({
     note,
     colId,
+    remove = false,
   }: {
     note: string;
     colId: number;
+    remove?: boolean;
   }) => {
-    setTouchedNotes((notes) => {
-      console.log(notes);
-      return Object.assign({}, notes, {
-        [colId]: notes[colId] === undefined ? [note] : [...notes[colId], note],
+    if (remove) {
+      setTouchedNotes((notes) => {
+        return Object.assign({}, notes, {
+          [colId]:
+            notes[colId] === undefined
+              ? []
+              : notes[colId].filter((n) => n != note),
+        });
       });
-    });
+    } else {
+      setTouchedNotes((notes) => {
+        return Object.assign({}, notes, {
+          [colId]:
+            notes[colId] === undefined ? [note] : [...notes[colId], note],
+        });
+      });
+    }
   };
 
   useInterval(playMusicSheet, isPlaying ? 500 : null);
@@ -56,6 +74,7 @@ const Home: NextPage = () => {
         <meta name="description" content="music maker application" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <div className="absolute w-full h-20 top-0 bg-yellow-100"></div>
       <MusicGrid
         currentCol={currentCol}
         touchedNotes={touchedNotes}
