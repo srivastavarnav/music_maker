@@ -1,16 +1,11 @@
 import { useState } from "react";
 import { BsTriangleFill } from "react-icons/bs";
+import { BEATS_PER_BAR } from "../lib/constants";
 
 type BlockType = {
   rowId: number;
   colId: number;
-  playAndAddNote: ({
-    note,
-    colId,
-  }: {
-    note: string;
-    colId: number;
-  }) => void;
+  playAndAddNote: ({ note, colId }: { note: string; colId: number }) => void;
   removeNote: ({ note, colId }: { note: string; colId: number }) => void;
   note: string;
   playingCol: number;
@@ -76,10 +71,15 @@ const Block = ({
       } ${rowId === 7 ? "border-t-blue-400" : ""}
       ${rowId === 13 ? "border-b-gray-300 border-b-[2px]" : ""}
       ${rowId >= 14 ? "border-0 border-r-[0.5px]" : ""}
+      ${
+        (Math.floor(colId / (BEATS_PER_BAR * 2)) + 1) % 2 == 0 && !isSelected
+          ? "bg-gray-50"
+          : ""
+      }
       ${isSelected && rowId < 14 ? colors[rowId % colors.length] : ""}
       ${
         playingCol == colId && !isSelected
-          ? "bg-blue-50"
+          ? "bg-blue-100"
           : playingCol == colId && isSelected && rowId < 14
           ? "animate-bounce"
           : ""

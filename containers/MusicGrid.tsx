@@ -2,7 +2,7 @@ import Block from "../components/Block";
 import { useState, useEffect } from "react";
 import { PolySynth, Player } from "tone";
 import Drums from "../enums/drums.enum";
-import { BAR_LENGTH, BEATS_PER_BAR, NOTES } from "../lib/constants";
+import { NOTES, BAR_LENGTH, INCREASE_PERCENTAGE } from "../lib/constants";
 
 type MusicGridType = {
   currentCol: number;
@@ -30,6 +30,8 @@ type MusicGridType = {
   noteDuration: string;
   musicSheetRef: React.MutableRefObject<HTMLDivElement | null>;
   currentBlockRef: React.MutableRefObject<HTMLDivElement | null>;
+  numOfSheetColumns: number;
+  barLength: number;
 };
 
 const MusicGrid = ({
@@ -42,26 +44,32 @@ const MusicGrid = ({
   noteDuration,
   musicSheetRef,
   currentBlockRef,
+  numOfSheetColumns,
+  barLength,
 }: MusicGridType) => {
   const [musicSheet, setMusicSheet] = useState<[][] | null>(null);
-  const [numOfSheetColumns, setNumOfSheetColumns] = useState<number>(
-    BAR_LENGTH * BEATS_PER_BAR * 2
-  );
+  const increaseFactor =
+    INCREASE_PERCENTAGE *
+    (barLength - BAR_LENGTH > 0 ? barLength - BAR_LENGTH : 0);
+  const mobileIncreaseFactor =
+    barLength - BAR_LENGTH > 0 ? INCREASE_PERCENTAGE : 0;
 
   useEffect(() => {
     let musicSheet = new Array(16);
     const baseScale = 5;
     for (let i = 0; i < musicSheet.length - 2; i++) {
       const startScale = baseScale - Math.floor(i / NOTES.length);
-      musicSheet[i] = new Array(32).fill(NOTES[i % NOTES.length] + startScale);
+      musicSheet[i] = new Array(numOfSheetColumns).fill(
+        NOTES[i % NOTES.length] + startScale
+      );
     }
     for (let i = musicSheet.length - 2; i < musicSheet.length; i++) {
-      musicSheet[i] = new Array(32).fill(
+      musicSheet[i] = new Array(numOfSheetColumns).fill(
         i === musicSheet.length - 2 ? Drums.SNARE : Drums.KICK
       );
     }
     setMusicSheet(musicSheet);
-  }, []);
+  }, [numOfSheetColumns]);
 
   function playAndCaptureNote({
     note,
@@ -102,13 +110,28 @@ const MusicGrid = ({
       className="absolute w-full top-[81px] h-[calc(100%-190px)] flex overflow-x-auto"
       ref={musicSheetRef}
     >
-      <div className="relative w-[320%] tablet:w-[200%] lg:w-full overflow-hidden shrink-0">
-        <div className="grid grid-cols-32 ">
+      <div
+        className={`relative w-[${
+          barLength - BAR_LENGTH < -1 ? 100 : 320 + mobileIncreaseFactor
+        }%] tablet:w-[${
+          barLength - BAR_LENGTH < -1 ? 100 : 200 + mobileIncreaseFactor
+        }%] lg:w-[${100 + increaseFactor}%] overflow-hidden shrink-0`}
+      >
+        <div
+          className="grid"
+          style={{
+            gridTemplateColumns: `repeat(${numOfSheetColumns}, minmax(0, 1fr))`,
+          }}
+        >
           {musicSheet.map((rowItem, rowId) => {
             return rowItem.map((note, colId) => {
               return (
                 <div
-                  ref={colId == currentCol + 5 && rowId === 0 ? currentBlockRef : null}
+                  ref={
+                    colId == currentCol + 5 && rowId === 0
+                      ? currentBlockRef
+                      : null
+                  }
                   key={"" + rowId + colId}
                 >
                   <Block
