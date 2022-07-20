@@ -1,3 +1,11 @@
+# Written Report: Music Maker App
+## Stack Used
+- Next.js
+- Tailwind CSS
+- Typescript
+- Tone.js
+- React Icons
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -12,23 +20,28 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Features
+- Create music using polySynth notes with two octaves and drum beats on the music sheet
+- You can play and pause the music.
+- You can change the tempo of the beats using the slider.
+- You can change the length of the music sheet by going to settings menu.
+- This application is fully responsive for mobile devices, tablets as well as desktops, laptops and other bigger screens
+- When the music sheet is played it is autoscrolled to keep the playing notes in the view on the screen.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+        Working on this app initially required few decisions on the design part, the major one being whether to use the canvas for creating the music sheet or to use the DOM elements for the same. Here the implementation is done using DOM because of two reasons - it's a fairly small sized app - Canvas is really fast and weighs more in performance than DOM but implementation using DOM can also be fairly good in an app this size since in terms of performance, also, it's optimized by itself and quite simple to use, thus saving some time. 
+        Also, there was a fair amount of thought went into the implementation of music features itself which was done using another JS library - Tone.js
+        
+Other than Tone.js, I was familiar with all the tools used in creating this project. Tone.js was the new tool which was required for the implementation of musical instruments and related functionality. Tone.js is a Web Audio framework for creating interactive music in the browser. It has a lot of functionality from using built in instruments to using custom sounds and gives a lots of flexibility, thus the reason to use the same in this project.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+    This app has the basic features implemented to be able to start creating the music. So in terms of basic functionality and usage on different devices it's a nice version 1.0.
 
-## Learn More
+The major challenges faced were in terms of usage of Tone.js. Since I was quite unfamiliar with the tool, a few things took more time than it should have otherwise. Also, a fair amount of time went into making the music sheet responsive and interactive.
 
-To learn more about Next.js, take a look at the following resources:
+        There are a few features left which can be implemented and are important in terms of making this app a fully functional music creation tool, for example, having an option to change the note duration, musical scale, adding more octaves, giving an option to record and save the created music and many more.
+        
+## Rough estimation of time spent
+ - 0.5 day - choosing the right project which can be completed withing stipulated time and showcase some skills.
+ - 0.5 day - reading into Tone.js documentation and implement it into the project
+ - 1.75 day - creating the app structure and features, this includes setting up the repo, creating the layout, responsiveness, functionalities, code structure and refactors
+ - 0.25 day - Writing the documentation and code push
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
