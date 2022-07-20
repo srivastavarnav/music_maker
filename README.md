@@ -28,16 +28,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - This application is fully responsive for mobile devices, tablets as well as desktops, laptops and other bigger screens
 - When the music sheet is played it is autoscrolled to keep the playing notes in the view on the screen.
 
-        Working on this app initially required few decisions on the design part, the major one being whether to use the canvas for creating the music sheet or to use the DOM elements for the same. Here the implementation is done using DOM because of two reasons - it's a fairly small sized app - Canvas is really fast and weighs more in performance than DOM but implementation using DOM can also be fairly good in an app this size since in terms of performance, also, it's optimized by itself and quite simple to use, thus saving some time. 
-        Also, there was a fair amount of thought went into the implementation of music features itself which was done using another JS library - Tone.js
+Working on this app initially required few decisions on the design part, the major one being whether to use the canvas for creating the music sheet or to use the DOM elements for the same. Here the implementation is done using DOM because of two reasons - it's a fairly small sized app - Canvas is really fast and weighs more in performance than DOM but implementation using DOM can also be fairly good in an app this size since in terms of performance, also, it's optimized by itself and quite simple to use, thus saving some time. 
+Also, there was a fair amount of thought went into the implementation of music features itself which was done using another JS library - Tone.js
         
 Other than Tone.js, I was familiar with all the tools used in creating this project. Tone.js was the new tool which was required for the implementation of musical instruments and related functionality. Tone.js is a Web Audio framework for creating interactive music in the browser. It has a lot of functionality from using built in instruments to using custom sounds and gives a lots of flexibility, thus the reason to use the same in this project.
 
-    This app has the basic features implemented to be able to start creating the music. So in terms of basic functionality and usage on different devices it's a nice version 1.0.
+This app has the basic features implemented to be able to start creating the music. So in terms of basic functionality and usage on different devices it's a nice version 1.0.
 
 The major challenges faced were in terms of usage of Tone.js. Since I was quite unfamiliar with the tool, a few things took more time than it should have otherwise. Also, a fair amount of time went into making the music sheet responsive and interactive.
 
-        There are a few features left which can be implemented and are important in terms of making this app a fully functional music creation tool, for example, having an option to change the note duration, musical scale, adding more octaves, giving an option to record and save the created music and many more.
+There are a few features left which can be implemented and are important in terms of making this app a fully functional music creation tool, for example, having an option to change the note duration, musical scale, adding more octaves, giving an option to record and save the created music and many more.
         
 ## Rough estimation of time spent
  - 0.5 day - choosing the right project which can be completed withing stipulated time and showcase some skills.
