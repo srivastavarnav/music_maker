@@ -6,22 +6,18 @@ type BlockType = {
   colId: number;
   playAndAddNote: ({
     note,
-    duration,
     colId,
   }: {
     note: string;
-    duration?: string;
     colId: number;
   }) => void;
   removeNote: ({ note, colId }: { note: string; colId: number }) => void;
   note: string;
   playingCol: number;
   playAndAddDrumNote: ({
-    duration,
     name,
     colId,
   }: {
-    duration?: string;
     name: string;
     colId: number;
   }) => void;

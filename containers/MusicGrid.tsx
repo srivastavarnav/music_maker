@@ -29,6 +29,7 @@ type MusicGridType = {
     colId: number;
     remove?: boolean;
   }) => void;
+  noteDuration: string;
 };
 
 const MusicGrid = ({
@@ -38,6 +39,7 @@ const MusicGrid = ({
   kick,
   snare,
   setTouchedDrumNotes,
+  noteDuration,
 }: MusicGridType) => {
   const [musicSheet, setMusicSheet] = useState<[][] | null>(null);
 
@@ -58,15 +60,13 @@ const MusicGrid = ({
 
   function playAndCaptureNote({
     note,
-    duration = "16n",
     colId,
   }: {
     note: string;
-    duration?: string;
     colId: number;
   }) {
     setTouchedNotes({ note, colId });
-    instrument?.triggerAttackRelease(note, duration);
+    instrument?.triggerAttackRelease(note, noteDuration);
   }
 
   const removeNote = ({ note, colId }: { note: string; colId: number }) => {
@@ -78,11 +78,9 @@ const MusicGrid = ({
   };
 
   function playAndCaptureDrumNote({
-    duration = "16n",
     name,
     colId,
   }: {
-    duration?: string;
     name: string;
     colId: number;
   }) {
