@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { PolySynth, Player } from "tone";
 import Drums from "../enums/drums.enum";
 import { NOTES, BAR_LENGTH, INCREASE_PERCENTAGE } from "../lib/constants";
+import { RiLoader4Line } from "react-icons/ri";
 
 // dynamically generated classes are mentioned here to avoid tailwind css purge related bugs
 
@@ -159,9 +160,8 @@ const MusicGrid = ({
     </div>
   ) : (
     <div className="absolute inset-0 flex justify-center items-center">
-      Loading...
+      <RiLoader4Line size={64} color="#16a8f0" className="animate-spin" />
     </div>
-    // [@TODO: Add a loading gif/lottie/animated loader]
   );
 };
 
