@@ -4,6 +4,12 @@ import { PolySynth, Player } from "tone";
 import Drums from "../enums/drums.enum";
 import { NOTES, BAR_LENGTH, INCREASE_PERCENTAGE } from "../lib/constants";
 
+// dynamically generated classes are mentioned here to avoid tailwind css purge related bugs
+
+// lg:w-[100%] lg:w-[125%] lg:w-[150%] lg:w-[175%] lg:w-[200%]
+// w-[320%] w-[345%] w-[100%]
+// tablet:w-[200%] tablet:w-[225%] tablet:w-[100%]
+
 type MusicGridType = {
   currentCol: number;
   setTouchedNotes: ({
