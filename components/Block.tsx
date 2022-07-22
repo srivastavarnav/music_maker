@@ -72,7 +72,7 @@ const Block = ({
       ${rowId === 13 ? "border-b-gray-300 border-b-[2px]" : ""}
       ${rowId >= 14 ? "border-0 border-r-[0.5px]" : ""}
       ${
-        (Math.floor(colId / (BEATS_PER_BAR * 2)) + 1) % 2 == 0 && !isSelected
+        (Math.floor(colId / (BEATS_PER_BAR * 2)) + 1) % 2 == 0
           ? "bg-gray-50"
           : ""
       }
@@ -84,6 +84,7 @@ const Block = ({
           ? "animate-bounce"
           : ""
       }
+      ${playingCol == colId && isSelected && rowId >= 14 ? 'bg-blue-100': ''}
       `}
     >
       {rowId == 14 && (
