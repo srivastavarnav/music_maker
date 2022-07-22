@@ -183,8 +183,42 @@ const Home: NextPage = () => {
     }
   };
 
+  const removeNotesOnLengthChange = (
+    notes: TouchedNotes,
+    totalBarLength: number
+  ) => {
+    const notesArr = Object.keys(notes);
+    let copy = {};
+    if (notesArr.length < 0) return copy;
+    else {
+      let i = notesArr.length - 1;
+      while (i >= 0) {
+        if (+notesArr[i] < totalBarLength * BEATS_PER_BAR * 2) {
+          break;
+        }
+        copy = { ...copy, ...{ [notesArr[i]]: [] } };
+        i--;
+      }
+      return copy;
+    }
+  };
+
   const applySettings = () => {
-    setBarLength(barLength + barLengthCounter);
+    const totalBarLength = barLength + barLengthCounter;
+    if (barLengthCounter < 0) {
+      const updatedNotes = removeNotesOnLengthChange(
+        touchedNotes,
+        totalBarLength
+      );
+      setTouchedNotes({ ...touchedNotes, ...updatedNotes });
+      const updatedDrumNotes = removeNotesOnLengthChange(
+        touchedDrumNotes,
+        totalBarLength
+      );
+      setTouchedDrumNotes({ ...touchedDrumNotes, ...updatedDrumNotes });
+    }
+
+    setBarLength(totalBarLength);
     setBarLengthCounter(0);
     toggleSettings();
   };
