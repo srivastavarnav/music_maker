@@ -162,6 +162,7 @@ const Home: NextPage = () => {
 
   const toggleSettings = () => {
     stop(); //stop playing while settings is open
+    setBarLengthCounter(0);
     setIsSettingsOpen(!isSettingsOpen);
   };
 
@@ -219,7 +220,6 @@ const Home: NextPage = () => {
     }
 
     setBarLength(totalBarLength);
-    setBarLengthCounter(0);
     toggleSettings();
   };
 
