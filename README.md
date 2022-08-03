@@ -1,4 +1,5 @@
-# Written Report: Music Maker App
+# Music Maker App
+This is an attempt to build ChromeExperiments - Song Maker tool (https://musiclab.chromeexperiments.com/Song-Maker) using ReactJS
 ## Stack Used
 - Next.js
 - Tailwind CSS
